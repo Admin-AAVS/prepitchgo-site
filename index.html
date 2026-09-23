@@ -410,9 +410,17 @@
     .loop-card { grid-template-columns: 1fr; }
   }
   @media (max-aspect-ratio: 4/5) {
+    /* Tall screens: art sits in the top 60%, text on a solid band below it */
+    .hero-art { bottom: auto; height: 62svh; }
     .hero-art .wide { display: none; }
     .hero-art .tall { display: block; }
-    .hero-art img { object-position: center 30%; }
+    .hero-art img { object-position: center top; animation: none; }
+    .hero-shade {
+      background:
+        linear-gradient(to top, var(--navy-ink) 0%, var(--navy-ink) 40%, rgba(10,31,71,0.85) 48%, rgba(10,31,71,0) 62%);
+    }
+    .hero-inner { padding-bottom: 1.4rem; }
+    .hero-title { font-size: 1.75rem; }
   }
 </style>
 </head>
