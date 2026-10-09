@@ -977,29 +977,21 @@
 
 <p class="share-toast" id="shareToast" aria-live="polite"></p>
 
-<audio id="trackA" src="anthem.mp3" preload="none"></audio>
-<audio id="trackB" src="spree.mp3" preload="none"></audio>
+<!-- anthem.mp3 disabled by owner 2026-10-09 -->
+<audio id="trackB" src="spree.mp3" preload="none" loop></audio>
 
 <script>
 (function () {
-  // ── Field sound: two tracks, alternating, gentle fades. Browsers block autoplay,
-  //    so playback always starts from a tap; the choice is remembered per visitor.
-  var tracks = [document.getElementById('trackA'), document.getElementById('trackB')];
+  // ── Field sound: Spree loops. Anthem disabled by owner 2026-10-09.
+  //    Browsers block autoplay, so playback starts from a tap; the choice is remembered.
+  var track = document.getElementById('trackB');
   var pill = document.getElementById('soundPill');
   var heroBtn = document.getElementById('heroSound');
   var TARGET = 0.5;
-  var current = 0;
   var on = false;
   var fadeTimer = null;
 
-  tracks.forEach(function (t, i) {
-    t.volume = 0;
-    t.addEventListener('ended', function () {
-      if (!on) return;
-      current = (i + 1) % tracks.length;
-      start(tracks[current]);
-    });
-  });
+  track.volume = 0;
 
   function fadeTo(track, target, ms, done) {
     clearInterval(fadeTimer);
@@ -1033,15 +1025,14 @@
     on = true;
     setUI(true);
     try { localStorage.setItem('ppg-sound', '1'); } catch (e) {}
-    start(tracks[current]);
+    start(track);
   }
 
   function turnOff() {
     on = false;
     setUI(false);
     try { localStorage.setItem('ppg-sound', '0'); } catch (e) {}
-    var t = tracks[current];
-    fadeTo(t, 0, 500, function () { t.pause(); });
+    fadeTo(track, 0, 500, function () { track.pause(); });
   }
 
   function toggle() { on ? turnOff() : turnOn(); }
@@ -1064,8 +1055,7 @@
   // Pause when the tab is hidden, resume when it comes back.
   document.addEventListener('visibilitychange', function () {
     if (!on) return;
-    var t = tracks[current];
-    if (document.hidden) t.pause(); else t.play().catch(function () {});
+    if (document.hidden) track.pause(); else track.play().catch(function () {});
   });
 
   // ── Scroll reveal
