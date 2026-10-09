@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="icon-512.png">
 <link rel="apple-touch-icon" href="icon-512.png">
 <meta property="og:title" content="Pre-Pitch GO! — Coming Soon">
-<meta property="og:description" content="A softball game for young players, living in the seconds nobody watches: the ones before the pitch. In development.">
+<meta property="og:description" content="Why flip coaching flash cards that tell you, when Pre-Pitch GO! makes you call it?">
 <meta property="og:image" content="https://prepitchgo.app/og-flash.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pre-Pitch GO! — Coming Soon">
-<meta name="twitter:description" content="Do you know where to go if it comes to you?">
+<meta name="twitter:description" content="Why flip coaching flash cards that tell you, when Pre-Pitch GO! makes you call it?">
 <meta name="twitter:image" content="https://prepitchgo.app/og-flash.jpg">
 <meta name="twitter:image:alt" content="Don&rsquo;t flip it. Field it.">
 <meta name="theme-color" content="#1d6fe0">
@@ -107,25 +107,39 @@
     50% { height: 14px; }
   }
 
-  /* ── Hero ── */
+  /* ── Hero ──
+     Logo plate bottom edge, measured in the baked-in art:
+     hero-wide.jpg 676/1080, hero-tall.jpg 703/1125.
+     Wide frames use cover (larger scale). Tall frames use contain
+     (smaller scale) so the ball on the right is not cropped.
+     The art stays viewport-tall even if the hero grows, so the plate
+     does not chase the text. Gap clears 24px at rest and while the
+     wide art zooms to 1.06. */
   #hero {
+    --plate-bottom: max(62.593svh, 35.208vw);
+    --hero-gap: clamp(36px, 4.2svh, 64px);
     position: relative;
     min-height: 100svh;
-    display: grid;
-    place-items: end center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--navy-ink);
     overflow: hidden;
     isolation: isolate;
   }
   .hero-art {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100svh;
     z-index: -2;
   }
   .hero-art img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 45%;
+    object-position: center top;
     animation: slow-zoom 28s ease-in-out infinite alternate;
   }
   @keyframes slow-zoom {
@@ -135,15 +149,22 @@
   .hero-art .tall { display: none; }
   .hero-shade {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100svh;
     z-index: -1;
-    background:
-      linear-gradient(to top, rgba(10,31,71,0.94) 0%, rgba(10,31,71,0.7) 26%, rgba(10,31,71,0) 48%),
-      radial-gradient(120% 60% at 50% 100%, rgba(10,31,71,0.35), transparent 70%);
+    background: linear-gradient(to bottom,
+      rgba(10,31,71,0) 0,
+      rgba(10,31,71,0) var(--plate-bottom),
+      rgba(10,31,71,0.9) calc(var(--plate-bottom) + var(--hero-gap)),
+      var(--navy-ink) calc(var(--plate-bottom) + var(--hero-gap) + 10svh));
   }
   .hero-inner {
-    width: min(1100px, 100% - 2.5rem);
-    padding: 0 0 clamp(1.6rem, 4vh, 3rem);
+    width: min(1100px, calc(100% - 2.5rem));
+    margin-top: calc(var(--plate-bottom) + var(--hero-gap));
+    margin-inline: auto;
+    padding: 0 0 clamp(1.2rem, 3.2svh, 2.4rem);
     text-align: center;
     color: var(--chalk);
   }
@@ -181,10 +202,10 @@
   }
   .hero-title em { font-style: normal; color: var(--ball); }
   .hero-core {
-    margin: 0.4rem auto 0;
-    max-width: 40rem;
+    margin: 0.55rem auto 0;
+    max-width: 28em;
     font-family: 'Baloo 2', 'Nunito', sans-serif;
-    font-size: clamp(1.15rem, 2.15vw, 1.65rem);
+    font-size: clamp(1.05rem, 2.05vw, 1.55rem);
     font-weight: 800;
     line-height: 1.2;
     letter-spacing: -0.01em;
@@ -422,7 +443,7 @@
   /* ── Stack becomes a field ── */
   .stack-moment {
     position: relative;
-    min-height: clamp(520px, 72vh, 700px);
+    min-height: clamp(560px, 78vh, 760px);
     overflow: hidden;
     display: flex;
     align-items: flex-end;
@@ -435,15 +456,15 @@
   .paper {
     position: absolute;
     left: 50%;
-    top: 42%;
-    width: clamp(132px, 38vw, 220px);
+    top: 44%;
+    width: clamp(168px, 32vw, 280px);
     aspect-ratio: 3 / 2;
     border-radius: 14px;
     background: #fffdf8;
     border: 1px solid rgba(15,47,107,0.06);
-    box-shadow: 0 14px 30px rgba(10,31,71,0.28);
-    transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) rotate(var(--pile));
-    transition: transform 1.08s cubic-bezier(0.16, 0.84, 0.32, 1);
+    box-shadow: 0 16px 34px rgba(10,31,71,0.32);
+    transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) rotate(var(--pile)) scale(var(--sc, 1));
+    transition: transform 1.4s cubic-bezier(0.22, 0.8, 0.28, 1);
     transition-delay: var(--d);
   }
   .paper::before {
@@ -459,14 +480,39 @@
       rgba(29,111,224,0.22) 18px 19px
     );
   }
-  .stack-moment.in .paper {
-    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--spin));
+  .stack-moment.is-field .paper {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--spin)) scale(var(--sc, 1));
   }
+  .stack-moment.is-reset .paper { transition: none; }
+  .stack-foot {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    width: min(40rem, calc(100% - 32px));
+    margin: 0 auto clamp(1rem, 3vh, 1.8rem);
+  }
+  .stack-replay {
+    border: 0;
+    background: transparent;
+    color: var(--chalk);
+    font: 700 0.82rem/1 'Baloo 2', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    padding: 6px 8px;
+  }
+  .stack-replay:hover { color: var(--ball); }
+  .stack-replay:focus-visible { outline: 3px solid var(--ball); outline-offset: 3px; }
   .stack-caption {
     position: relative;
     z-index: 2;
-    width: min(40rem, calc(100% - 32px));
-    margin: 0 auto clamp(1.2rem, 4vh, 2.2rem);
+    width: 100%;
+    margin: 0;
     padding: 0.85rem 1rem;
     border-radius: 18px;
     background: rgba(10,31,71,0.92);
@@ -516,16 +562,37 @@
   .flash-front {
     transform: rotateY(0deg);
     align-items: flex-start;
-    padding: clamp(1.15rem, 4vw, 2rem);
+    padding: clamp(1.15rem, 4vw, 2rem) clamp(1.15rem, 4vw, 2rem) 2.8rem;
     color: var(--navy);
   }
   .flash-back {
     transform: rotateY(180deg);
     align-items: center;
     text-align: center;
-    padding: 1.2rem 1.15rem 5.3rem;
+    padding: 1.2rem 1.15rem 5.8rem;
     color: var(--navy);
   }
+  .flash-hint {
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.38rem 0.6rem 0.38rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(29,111,224,0.12);
+    color: var(--navy);
+    font: 800 0.78rem/1 'Baloo 2', sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .flash-hint svg { width: 16px; height: 16px; flex: none; }
+  @keyframes flash-nudge {
+    0%, 100% { transform: rotateY(0deg); }
+    42% { transform: rotateY(-16deg); }
+    72% { transform: rotateY(6deg); }
+  }
+  .flash-scene.nudge:not(.is-flipped) .flash-inner { animation: flash-nudge 0.9s ease-in-out 0.3s 1; }
   .flash-q {
     display: flex;
     flex-direction: column;
@@ -552,21 +619,32 @@
     letter-spacing: -0.02em;
     text-wrap: balance;
   }
-  .flash-cta {
+  .flash-actions {
     position: absolute;
-    left: 0.8rem;
-    right: 0.8rem;
-    bottom: 1.15rem;
+    left: 0.7rem;
+    right: 0.7rem;
+    bottom: 0.95rem;
     z-index: 5;
-    width: fit-content;
-    margin-inline: auto;
-    max-width: calc(100% - 1.6rem);
-    white-space: nowrap;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
   }
-  .flash-scene.is-flipped .flash-cta {
+  .flash-actions .btn {
+    padding: 12px 16px;
+    white-space: nowrap;
+  }
+  .flash-actions .btn-ghost {
+    background: rgba(15,47,107,0.08);
+    color: var(--navy);
+    border: 1px solid rgba(15,47,107,0.28);
+    box-shadow: none;
+  }
+  .flash-actions .btn-ghost:hover { background: rgba(15,47,107,0.14); }
+  .flash-scene.is-flipped .flash-actions {
     opacity: 1;
     pointer-events: auto;
     transition-delay: 0.42s;
@@ -583,10 +661,35 @@
     -webkit-tap-highlight-color: transparent;
   }
   .flash-hit:focus-visible,
-  .flash-cta:focus-visible {
+  .flash-actions .btn:focus-visible,
+  .share-btn:focus-visible {
     outline: 3px solid var(--ball);
     outline-offset: 4px;
   }
+  .signup-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .share-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%) translateY(8px);
+    z-index: 70;
+    margin: 0;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: var(--navy-ink);
+    color: var(--ball);
+    font: 800 0.85rem/1 'Baloo 2', sans-serif;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .visually-hidden {
     position: absolute;
     width: 1px;
@@ -629,27 +732,24 @@
     .tease-visual { order: -1; transform: rotate(-1deg); aspect-ratio: 16 / 11; }
     .glimpses { grid-template-columns: 1fr; }
     .loop-card { grid-template-columns: 1fr; }
+    .signup-actions { justify-content: flex-start; }
   }
   @media (max-aspect-ratio: 4/5) {
-    /* Tall screens: art sits in the top 60%, text on a solid band below it */
-    .hero-art { bottom: auto; height: 62svh; }
     .hero-art .wide { display: none; }
     .hero-art .tall { display: block; }
-    .hero-art img { object-position: center top; animation: none; }
-    .hero-shade {
-      background:
-        linear-gradient(to top, var(--navy-ink) 0%, var(--navy-ink) 40%, rgba(10,31,71,0.85) 48%, rgba(10,31,71,0) 62%);
-    }
-    .hero-inner { padding-bottom: 1.4rem; }
-    .hero-title { font-size: 1.75rem; }
-    .hero-core { font-size: 1.12rem; max-width: 17rem; }
+    .hero-art img { object-fit: contain; object-position: center top; animation: none; }
+    #hero { --plate-bottom: min(62.489svh, 78.111vw); }
+    .hero-title { font-size: clamp(1.55rem, 7.2vw, 1.9rem); }
+    .hero-core { font-size: clamp(1.02rem, 4.5vw, 1.22rem); max-width: 100%; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .stack-moment .paper {
       transition: none;
-      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--spin));
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--spin)) scale(var(--sc, 1));
     }
+    .stack-replay { display: none; }
+    .flash-scene.nudge:not(.is-flipped) .flash-inner { animation: none; }
     .flash-inner,
     .flash-scene.is-flipped .flash-inner {
       transition: none;
@@ -666,11 +766,12 @@
     .flash-back { opacity: 0; }
     .flash-scene.is-flipped .flash-front { opacity: 0; }
     .flash-scene.is-flipped .flash-back { opacity: 1; }
-    .flash-cta,
-    .flash-scene.is-flipped .flash-cta {
+    .flash-actions,
+    .flash-scene.is-flipped .flash-actions {
       transition: opacity 0.35s ease;
       transition-delay: 0s;
     }
+    .share-toast { transition: none; }
   }
 </style>
 </head>
@@ -692,7 +793,7 @@
   <div class="hero-inner">
     <span class="status-chip">In development</span>
     <h1 class="hero-title">The play starts <em>before</em> the pitch.</h1>
-    <p class="hero-core">Flash cards tell you. Pre-Pitch GO! makes you call it.</p>
+    <p class="hero-core">Why flip coaching flash cards that tell you, when Pre-Pitch GO! makes you call it?</p>
     <p class="hero-sub">
       A softball game for young players, living in the seconds nobody watches.
       From the studio behind DEcoDLE.
@@ -779,15 +880,18 @@
   <!-- STACK BECOMES A FIELD -->
   <section class="stack-moment" id="stack" aria-labelledby="stack-caption">
     <div class="stack-stage" aria-hidden="true">
-      <div class="paper" style="--pile:-8deg; --px:-10px; --py:6px; --dx:-130vw; --dy:-18vh; --spin:-24deg; --d:0s"></div>
-      <div class="paper" style="--pile:6deg; --px:12px; --py:-8px; --dx:130vw; --dy:-14vh; --spin:18deg; --d:.05s"></div>
-      <div class="paper" style="--pile:-3deg; --px:-6px; --py:10px; --dx:-125vw; --dy:16vh; --spin:-14deg; --d:.1s"></div>
-      <div class="paper" style="--pile:10deg; --px:8px; --py:2px; --dx:128vw; --dy:14vh; --spin:22deg; --d:.08s"></div>
-      <div class="paper" style="--pile:-1deg; --px:2px; --py:-6px; --dx:-36vw; --dy:-78vh; --spin:-10deg; --d:.12s"></div>
-      <div class="paper" style="--pile:4deg; --px:-12px; --py:-2px; --dx:40vw; --dy:-76vh; --spin:14deg; --d:.16s"></div>
-      <div class="paper" style="--pile:1deg; --px:4px; --py:0px; --dx:132vw; --dy:6vh; --spin:26deg; --d:.06s"></div>
+      <div class="paper" style="--pile:-22deg; --px:-9vw; --py:-7vh; --sc:1.05; --dx:-85vw; --dy:-36vh; --spin:-32deg; --d:0s"></div>
+      <div class="paper" style="--pile:16deg; --px:11vw; --py:-5vh; --sc:0.92; --dx:85vw; --dy:-32vh; --spin:24deg; --d:.05s"></div>
+      <div class="paper" style="--pile:-8deg; --px:-2vw; --py:1vh; --sc:1.12; --dx:-82vw; --dy:30vh; --spin:-18deg; --d:.1s"></div>
+      <div class="paper" style="--pile:24deg; --px:6vw; --py:8vh; --sc:0.96; --dx:82vw; --dy:28vh; --spin:30deg; --d:.07s"></div>
+      <div class="paper" style="--pile:-30deg; --px:-14vw; --py:3vh; --sc:0.88; --dx:-24vw; --dy:-70vh; --spin:-14deg; --d:.12s"></div>
+      <div class="paper" style="--pile:10deg; --px:15vw; --py:2vh; --sc:1; --dx:26vw; --dy:-68vh; --spin:16deg; --d:.14s"></div>
+      <div class="paper" style="--pile:-4deg; --px:1vw; --py:-2vh; --sc:1.08; --dx:88vw; --dy:6vh; --spin:28deg; --d:.03s"></div>
     </div>
-    <h2 class="stack-caption reveal" id="stack-caption">Every coach has a stack of defensive flash cards. We turned the stack into a field.</h2>
+    <div class="stack-foot">
+      <button class="stack-replay" id="stackReplay" type="button">Shuffle again</button>
+      <h2 class="stack-caption" id="stack-caption">Every coach has a stack of defensive flash cards. We turned the stack into a field.</h2>
+    </div>
   </section>
 
   <!-- TAP TO FLIP -->
@@ -802,6 +906,10 @@
                 <span>Ground ball to short.</span>
                 <span>Where&rsquo;s the throw?</span>
               </p>
+              <p class="flash-hint" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h9a3 3 0 0 1 3 3v2"/><path d="m16 4 3 3-3 3"/><path d="M17 17H8a3 3 0 0 1-3-3v-2"/><path d="m8 20-3-3 3-3"/></svg>
+                Tap to flip
+              </p>
             </div>
             <div class="flash-face flash-back" id="flashBack">
               <p class="flash-hook" aria-hidden="true">Don&rsquo;t flip it.<br>Field it.</p>
@@ -809,7 +917,10 @@
           </div>
         </div>
         <button class="flash-hit" id="flashToggle" type="button" aria-pressed="false" data-front="Runner on second. Ground ball to short. Where’s the throw?" data-back="Don’t flip it. Field it." aria-label="Runner on second. Ground ball to short. Where’s the throw? Flip the card."></button>
-        <a class="btn btn-ball flash-cta" id="flashCta" tabindex="-1" aria-hidden="true" href="mailto:admin@adastravanguard.com?subject=Pre-Pitch%20GO%21%20reveal%20list&amp;body=Put%20me%20on%20the%20list%20for%20the%20Pre-Pitch%20GO%21%20reveal.">Put me on the list</a>
+        <div class="flash-actions" id="flashActions" aria-hidden="true">
+          <a class="btn btn-ball" id="flashCta" tabindex="-1" href="mailto:admin@adastravanguard.com?subject=Pre-Pitch%20GO%21%20reveal%20list&amp;body=Put%20me%20on%20the%20list%20for%20the%20Pre-Pitch%20GO%21%20reveal.">Put me on the list</a>
+          <button class="btn btn-ghost share-btn" id="flashShare" type="button" tabindex="-1" data-share>Share</button>
+        </div>
         <p class="visually-hidden" id="flashLive" aria-live="polite" aria-atomic="true"></p>
       </div>
     </div>
@@ -840,9 +951,10 @@
             <span class="plat">Reveal · TBA</span>
           </div>
         </div>
-        <a class="btn btn-ball" href="mailto:admin@adastravanguard.com?subject=Pre-Pitch%20GO%21%20reveal%20list&amp;body=Put%20me%20on%20the%20list%20for%20the%20Pre-Pitch%20GO%21%20reveal.">
-          Put me on the list
-        </a>
+        <div class="signup-actions">
+          <a class="btn btn-ball" href="mailto:admin@adastravanguard.com?subject=Pre-Pitch%20GO%21%20reveal%20list&amp;body=Put%20me%20on%20the%20list%20for%20the%20Pre-Pitch%20GO%21%20reveal.">Put me on the list</a>
+          <button class="btn btn-ghost share-btn" id="loopShare" type="button" data-share>Share</button>
+        </div>
       </div>
     </div>
   </section>
@@ -862,6 +974,8 @@
     <div class="credit">Music: Pre-Pitch GO! original soundtrack. Art and gameplay shown are in development and may change.</div>
   </div>
 </footer>
+
+<p class="share-toast" id="shareToast" aria-live="polite"></p>
 
 <audio id="trackA" src="anthem.mp3" preload="none"></audio>
 <audio id="trackB" src="spree.mp3" preload="none"></audio>
@@ -960,43 +1074,142 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 
-  // Stack of cards slides apart once the field section is on screen. No scroll lock.
+  // Stack: show the messy pile, then deal the cards once the section is
+  // at least half on screen. Leaving the view stacks them again. A refresh
+  // that lands in the section still shows the pile before it moves.
   var stack = document.getElementById('stack');
+  var stackReplay = document.getElementById('stackReplay');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stackTimer = null;
+  function resetPile() {
+    clearTimeout(stackTimer);
+    stackTimer = null;
+    if (!stack) return;
+    stack.classList.add('is-reset');
+    stack.classList.remove('is-field');
+    void stack.offsetWidth;
+    stack.classList.remove('is-reset');
+  }
+  function dealStack() {
+    clearTimeout(stackTimer);
+    stackTimer = setTimeout(function () {
+      stackTimer = null;
+      stack.classList.add('is-field');
+    }, 400);
+  }
+  function replayStack() {
+    resetPile();
+    dealStack();
+  }
   if (stack && !reduceMotion) {
     var stackIO = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('in');
-        stackIO.unobserve(e.target);
+        if (e.intersectionRatio >= 0.5) {
+          if (!stack.classList.contains('is-field') && !stackTimer) dealStack();
+        } else if (!e.isIntersecting) {
+          resetPile();
+        }
       });
-    }, { threshold: 0.32 });
+    }, { threshold: [0, 0.5] });
     stackIO.observe(stack);
+    if (stackReplay) stackReplay.addEventListener('click', replayStack);
   }
 
   // Flash card: one real button, second tap returns to the question. No answer is shown.
   var scene = document.getElementById('flashScene');
-  var toggle = document.getElementById('flashToggle');
+  var flashBtn = document.getElementById('flashToggle');
   var cta = document.getElementById('flashCta');
+  var flashShare = document.getElementById('flashShare');
+  var flashActions = document.getElementById('flashActions');
   var live = document.getElementById('flashLive');
-  if (scene && toggle) {
-    toggle.addEventListener('click', function () {
+  function setBackControls(flipped) {
+    [cta, flashShare].forEach(function (el) {
+      if (!el) return;
+      if (flipped) el.removeAttribute('tabindex');
+      else el.setAttribute('tabindex', '-1');
+    });
+    if (flashActions) {
+      if (flipped) flashActions.removeAttribute('aria-hidden');
+      else flashActions.setAttribute('aria-hidden', 'true');
+    }
+  }
+  if (scene && flashBtn) {
+    var nudged = false;
+    var nudgeIO = null;
+    flashBtn.addEventListener('click', function () {
+      nudged = true;
+      if (nudgeIO) nudgeIO.disconnect();
+      scene.classList.remove('nudge');
       var flipped = scene.classList.toggle('is-flipped');
-      toggle.setAttribute('aria-pressed', flipped ? 'true' : 'false');
-      var face = flipped ? toggle.getAttribute('data-back') : toggle.getAttribute('data-front');
-      toggle.setAttribute('aria-label', face + (flipped ? ' Flip the card back.' : ' Flip the card.'));
-      if (cta) {
-        if (flipped) {
-          cta.removeAttribute('tabindex');
-          cta.removeAttribute('aria-hidden');
-        } else {
-          cta.setAttribute('tabindex', '-1');
-          cta.setAttribute('aria-hidden', 'true');
-        }
-      }
+      flashBtn.setAttribute('aria-pressed', flipped ? 'true' : 'false');
+      var face = flipped ? flashBtn.getAttribute('data-back') : flashBtn.getAttribute('data-front');
+      flashBtn.setAttribute('aria-label', face + (flipped ? ' Flip the card back.' : ' Flip the card.'));
+      setBackControls(flipped);
       if (live) live.textContent = face;
     });
+    if (!reduceMotion) {
+      nudgeIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (nudged || scene.classList.contains('is-flipped') || e.intersectionRatio < 0.5) return;
+          nudged = true;
+          scene.classList.add('nudge');
+          nudgeIO.disconnect();
+        });
+      }, { threshold: [0.5] });
+      nudgeIO.observe(scene);
+    }
   }
+
+  // Share: system sheet when the browser has it, otherwise copy the link.
+  var CORE_LINE = 'Why flip coaching flash cards that tell you, when Pre-Pitch GO! makes you call it?';
+  var shareToast = document.getElementById('shareToast');
+  var shareToastTimer = null;
+  function showCopied() {
+    if (!shareToast) return;
+    shareToast.textContent = '';
+    shareToast.classList.add('show');
+    shareToast.textContent = 'Link copied';
+    clearTimeout(shareToastTimer);
+    shareToastTimer = setTimeout(function () {
+      shareToast.classList.remove('show');
+      shareToast.textContent = '';
+    }, 2000);
+  }
+  function copyLink() {
+    var url = 'https://prepitchgo.app/';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(url);
+    }
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = url;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) resolve(); else reject();
+      } catch (err) {
+        document.body.removeChild(ta);
+        reject(err);
+      }
+    });
+  }
+  function onShare(ev) {
+    ev.stopPropagation();
+    var payload = { title: 'Pre-Pitch GO!', text: CORE_LINE, url: 'https://prepitchgo.app/' };
+    if (navigator.share) {
+      navigator.share(payload).catch(function () {});
+      return;
+    }
+    copyLink().then(showCopied).catch(function () {});
+  }
+  document.querySelectorAll('[data-share]').forEach(function (btn) {
+    btn.addEventListener('click', onShare);
+  });
 })();
 </script>
 </body>
