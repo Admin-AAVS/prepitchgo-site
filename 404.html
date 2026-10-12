@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found - Pre-Pitch GO!</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="/icon-512.png">
+<meta name="theme-color" content="#1d6fe0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --navy-ink: #0a1f47; --ball: #f4f042; --chalk: #fffdf5; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--navy-ink);
+    color: var(--chalk);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    text-align: center;
+    line-height: 1.6;
+  }
+  h1 { font-family: 'Baloo 2', 'Nunito', sans-serif; font-size: 2rem; line-height: 1.2; margin-bottom: 0.6rem; }
+  a { color: var(--ball); font-weight: 700; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Page not found</h1>
+  <p><a href="/">Back to the Pre-Pitch GO! home page</a></p>
+</main>
+<script>
+  if (location.pathname.toLowerCase().indexOf('/promo-rules') === 0) {
+    location.replace('/promo-rules/' + location.search + location.hash);
+  }
+</script>
+</body>
+</html>
